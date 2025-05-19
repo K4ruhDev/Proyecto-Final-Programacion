@@ -97,7 +97,7 @@ export default function CartDrawer() {
                             <span className="sr-only">Aumentar cantidad</span>
                           </Button>
                         </div>
-                        <div className="font-medium">${(item.price * item.quantity).toFixed(2)}</div>
+                        <div className="font-medium">{(item.price * item.quantity).toFixed(2)} €</div>
                       </div>
                     </div>
                   </li>
@@ -109,7 +109,7 @@ export default function CartDrawer() {
               <div className="space-y-1.5">
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Subtotal</span>
-                  <span>${cartTotal.toFixed(2)}</span>
+                  <span>{cartTotal.toFixed(2)} €</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Envío</span>
@@ -118,7 +118,7 @@ export default function CartDrawer() {
                 <Separator className="my-2" />
                 <div className="flex justify-between font-medium">
                   <span>Total</span>
-                  <span>${cartTotal.toFixed(2)}</span>
+                  <span>{cartTotal.toFixed(2)} €</span>
                 </div>
               </div>
               <div className="flex flex-col gap-2">

@@ -37,7 +37,7 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
         <div className="text-sm text-muted-foreground mb-2">
           Tueste {product.roast} · {product.weight}
         </div>
-        <p className="text-primary-900 font-medium">${product.price.toFixed(2)}</p>
+        <p className="text-primary-900 font-medium">{product.price.toFixed(2)} €</p>
       </CardContent>
       <CardFooter className="p-4 pt-0">
         <AddToCartButton product={product} />

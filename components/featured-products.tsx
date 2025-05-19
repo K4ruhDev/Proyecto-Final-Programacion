@@ -39,7 +39,7 @@ export default function FeaturedProducts() {
         origin: "Indonesia",
         roast: "Oscuro",
         slug: "sumatra-mandheling",
-        image: "https://images.unsplash.com/photo-1559525839-d9ac848e1c50?q=80&w=1974&auto=format&fit=crop",
+        image: "./images/brazil.png",
       },
       {
         id: 4,
@@ -91,7 +91,7 @@ export default function FeaturedProducts() {
         origin: "Panamá",
         roast: "Ligero",
         slug: "panama-geisha",
-        image: "https://images.unsplash.com/photo-1559525839-d9ac848e1c50?q=80&w=1974&auto=format&fit=crop",
+        image: "./images/brazil.png",
       },
     ],
     singleOrigin: [
@@ -133,7 +133,7 @@ export default function FeaturedProducts() {
         origin: "Panamá",
         roast: "Ligero",
         slug: "panama-geisha",
-        image: "https://images.unsplash.com/photo-1559525839-d9ac848e1c50?q=80&w=1974&auto=format&fit=crop",
+        image: "./images/brazil.png",
       },
     ],
   }
@@ -192,7 +192,7 @@ function ProductCard({ product }) {
           <h3 className="font-semibold text-lg mb-1 hover:text-primary-700 transition-colors">{product.name}</h3>
         </Link>
         <div className="text-sm text-muted-foreground mb-2">Tueste {product.roast}</div>
-        <p className="text-primary-900 font-medium">${product.price.toFixed(2)}</p>
+        <p className="text-primary-900 font-medium">{product.price.toFixed(2)} €</p>
       </CardContent>
       <CardFooter className="p-4 pt-0">
         <AddToCartButton product={product} />

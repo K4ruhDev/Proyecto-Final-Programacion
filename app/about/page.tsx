@@ -48,7 +48,7 @@ export default function AboutPage() {
               </p>
             </div>
             <div className="relative h-[400px] rounded-xl overflow-hidden shadow-xl animate-fadeInRight">
-              <Image src="/images/barista.png" alt="Barista preparando café" fill className="object-cover" priority />
+              <Image src="/images/coffee-origins.png" alt="Barista preparando café" fill className="object-cover" priority />
             </div>
           </div>
         </div>

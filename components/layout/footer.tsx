@@ -8,7 +8,7 @@ import FacebookIcon from "@/components/icons/facebook-icon"
 import InstagramIcon from "@/components/icons/instagram-icon"
 import TwitterIcon from "@/components/icons/twitter-icon"
 
-const currentYear = new Date().getFullYear();
+const currentYear: String = new Date().getFullYear().toString();
 
 export default function Footer() {
   return (
