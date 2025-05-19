@@ -9,7 +9,6 @@ import { usePathname } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Separator } from "@/components/ui/separator"
-import UserIcon from "@/components/icons/user-icon"
 import MenuIcon from "@/components/icons/menu-icon"
 import CartDrawer from "@/components/ui/cart-drawer"
 import SearchDialog from "@/components/search/search-dialog"
@@ -53,7 +52,7 @@ export default function Header() {
           </SheetContent>
         </Sheet>
         <Link href="/" className="flex items-center gap-2 font-semibold mr-6">
-          <Coffee className="h-6 w-6 text-primary-600" />
+          <Coffee className="h-6 w-6 text-primary-600 transition duration-200 ease-in-out hover:rotate-6 hover:scale-110" />
           <span className="hidden md:inline-block text-lg">Onsen Coffee</span>
         </Link>
         <nav className="hidden md:flex gap-6 text-sm font-medium">

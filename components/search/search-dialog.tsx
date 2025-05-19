@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation"
 import Image from "next/image"
 
 import { Button } from "@/components/ui/button"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { getProductsBySearch, getBlogPostsBySearch } from "@/lib/data"
@@ -20,6 +20,21 @@ export default function SearchDialog() {
   const [products, setProducts] = useState<Product[]>([])
   const [posts, setPosts] = useState<BlogPost[]>([])
   const router = useRouter()
+
+  // Limpiar estados cuando se cierra el diálogo
+  useEffect(() => {
+    if (!open) {
+      // Retraso pequeño para evitar flash visual durante la animación de cierre
+      const timeout = setTimeout(() => {
+        setQuery("")
+        setProducts([])
+        setPosts([])
+        setActiveTab("products")
+      }, 300)
+      
+      return () => clearTimeout(timeout)
+    }
+  }, [open])
 
   // Perform search when query changes
   useEffect(() => {
@@ -50,6 +65,13 @@ export default function SearchDialog() {
     router.push(url)
   }
 
+  // Manejar tecla Escape
+  const handleKeyDown = (e) => {
+    if (e.key === "Escape") {
+      setOpen(false)
+    }
+  }
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -58,10 +80,10 @@ export default function SearchDialog() {
           <span className="sr-only">Buscar</span>
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[550px] p-0">
-        <DialogHeader className="px-4 pt-5 pb-0">
+      <DialogContent className="sm:max-w-[550px] p-0 [&>button]:hidden" onKeyDown={handleKeyDown}>
+        <DialogHeader className="px-4 pt-5 pb-0 flex flex-row items-center justify-between">
           <DialogTitle className="sr-only">Buscar</DialogTitle>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-1">
             <Search className="h-5 w-5 text-muted-foreground" />
             <Input
               placeholder="Buscar productos, artículos..."
@@ -70,14 +92,16 @@ export default function SearchDialog() {
               className="border-0 focus-visible:ring-0 focus-visible:ring-offset-0 p-0"
               autoFocus
             />
-            {query && (
-              <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => setQuery("")}>
-                <X className="h-4 w-4" />
-                <span className="sr-only">Limpiar</span>
-              </Button>
-            )}
           </div>
         </DialogHeader>
+        <div className="absolute top-5 right-4">
+          <DialogClose asChild>
+            <Button variant="ghost" size="icon" className="h-7 w-7" aria-label="Cerrar búsqueda">
+              <X className="h-5 w-5 text-muted-foreground" />
+              <span className="sr-only">Cerrar</span>
+            </Button>
+          </DialogClose>
+        </div>
         <Tabs defaultValue="products" value={activeTab} onValueChange={setActiveTab} className="mt-2">
           <div className="px-4">
             <TabsList className="grid w-full grid-cols-2">
@@ -206,6 +230,7 @@ export default function SearchDialog() {
               )}
             </TabsContent>
           </div>
+
         </Tabs>
       </DialogContent>
     </Dialog>
