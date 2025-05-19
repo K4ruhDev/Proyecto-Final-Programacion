@@ -35,6 +35,8 @@ export default function ContactPageClient() {
 
     if (!formData.name.trim()) {
       newErrors.name = "El nombre es requerido"
+    } else if (formData.name.trim().length < 3) {
+      newErrors.name = "El nombre debe tener al menos 3 caracteres"
     }
 
     if (!formData.email.trim()) {
@@ -45,10 +47,16 @@ export default function ContactPageClient() {
 
     if (!formData.subject.trim()) {
       newErrors.subject = "El asunto es requerido"
+    } else if (formData.subject.trim().length < 5) {
+      newErrors.subject = "El asunto debe tener al menos 5 caracteres"
     }
 
     if (!formData.message.trim()) {
       newErrors.message = "El mensaje es requerido"
+    } else if (formData.message.trim().length < 10) {
+      newErrors.message = "El mensaje debe tener al menos 10 caracteres"
+    } else if (formData.message.trim().length > 500) {
+      newErrors.message = "El mensaje debe tener menos de 500 caracteres"
     }
 
     setErrors(newErrors)
@@ -145,8 +153,8 @@ export default function ContactPageClient() {
                         name="message"
                         value={formData.message}
                         onChange={handleChange}
-                        className={`min-h-[150px] border-primary-200 ${errors.message ? "border-red-500" : ""}`}
-                      />
+                        className={`min-h-[150px] max-h-[400px] border-primary-200 ${errors.message ? "border-red-500" : ""}`}
+                      /> 
                       {errors.message && <p className="text-red-500 text-sm mt-1">{errors.message}</p>}
                     </div>
                     <Button

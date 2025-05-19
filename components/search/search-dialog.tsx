@@ -88,6 +88,7 @@ export default function SearchDialog() {
             <Input
               placeholder="Buscar productos, artículos..."
               value={query}
+              maxLength={50}
               onChange={(e) => setQuery(e.target.value)}
               className="border-0 focus-visible:ring-0 focus-visible:ring-offset-0 p-0"
               autoFocus
