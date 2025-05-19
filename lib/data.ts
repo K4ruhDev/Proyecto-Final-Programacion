@@ -1,4 +1,5 @@
 import type { Product, BlogPost, Review } from "@/lib/types"
+import { supabase } from "./supabase"; 
 
 export const products: Product[] = [
   {
