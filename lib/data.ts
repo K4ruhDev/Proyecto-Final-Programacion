@@ -38,7 +38,7 @@ export const products: Product[] = [
     slug: "colombian-supremo",
     category: "single-origin",
     featured: true,
-    stock: 30,
+    stock: 0,
   },
   {
     id: 3,

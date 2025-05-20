@@ -28,6 +28,11 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
             Nuevo
           </div>
         )}
+        {product.stock === 0 && (
+          <div className="absolute bottom-3 left-3 bg-red-600 text-white text-s font-medium px-2 py-1 rounded-full">
+            No hay stock
+          </div>
+        )}
       </Link>
       <CardContent className="p-4">
         <div className="text-sm text-primary-600 mb-1">{product.origin}</div>

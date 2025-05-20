@@ -29,34 +29,41 @@ export default function ContactPageClient() {
       setErrors((prev) => ({ ...prev, [name]: null }))
     }
   }
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   const validateForm = () => {
-    const newErrors = {}
+    const newErrors: Record<string, string> = {};
 
     if (!formData.name.trim()) {
-      newErrors.name = "El nombre es requerido"
+      newErrors.name = "El nombre es requerido";
     } else if (formData.name.trim().length < 3) {
-      newErrors.name = "El nombre debe tener al menos 3 caracteres"
+      newErrors.name = "El nombre debe tener al menos 3 caracteres";
+    } else if (formData.name.trim().length > 50) {
+      newErrors.name = "El nombre debe tener menos de 50 caracteres";
     }
 
     if (!formData.email.trim()) {
-      newErrors.email = "El email es requerido"
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Email inválido"
+      newErrors.email = "El email es requerido";
+    } else if (!emailRegex.test(formData.email)) {
+      newErrors.email = "Email inválido";
+    } else if (formData.email.trim().length > 100) {
+      newErrors.email = "El email debe tener menos de 100 caracteres";
     }
 
     if (!formData.subject.trim()) {
-      newErrors.subject = "El asunto es requerido"
+      newErrors.subject = "El asunto es requerido";
     } else if (formData.subject.trim().length < 5) {
-      newErrors.subject = "El asunto debe tener al menos 5 caracteres"
+      newErrors.subject = "El asunto debe tener al menos 5 caracteres";
+    } else if (formData.subject.trim().length > 50) {
+      newErrors.subject = "El asunto debe tener menos de 50 caracteres";
     }
 
     if (!formData.message.trim()) {
-      newErrors.message = "El mensaje es requerido"
+      newErrors.message = "El mensaje es requerido";
     } else if (formData.message.trim().length < 10) {
-      newErrors.message = "El mensaje debe tener al menos 10 caracteres"
+      newErrors.message = "El mensaje debe tener al menos 10 caracteres";
     } else if (formData.message.trim().length > 500) {
-      newErrors.message = "El mensaje debe tener menos de 500 caracteres"
+      newErrors.message = "El mensaje debe tener menos de 500 caracteres";
     }
 
     setErrors(newErrors)
@@ -128,7 +135,7 @@ export default function ContactPageClient() {
                       <Input
                         id="email"
                         name="email"
-                        type="email"
+                        type="text"
                         value={formData.email}
                         onChange={handleChange}
                         className={`border-primary-200 ${errors.email ? "border-red-500" : ""}`}
