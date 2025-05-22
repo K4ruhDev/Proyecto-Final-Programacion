@@ -231,6 +231,12 @@ export default function CheckoutPage() {
                           PayPal
                         </Label>
                       </div>
+                      <div className="flex items-center space-x-2 border rounded-md p-4 cursor-pointer hover:bg-primary-50 transition-colors">
+                        <RadioGroupItem value="bizum" id="bizum" />
+                        <Label htmlFor="bizum" className="cursor-pointer">
+                          Bizum
+                        </Label>
+                      </div>
                     </RadioGroup>
 
                     {paymentMethod === "card" && (

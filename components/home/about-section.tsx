@@ -11,7 +11,7 @@ export default function AboutSection() {
           <div className="relative animate-fadeIn order-2 lg:order-1">
             <Image
               src="/images/coffee-roasting.png"
-              width={400}
+              width={550}
               height={550}
               alt="Proceso de tostado de café"
               className="mx-auto aspect-square overflow-hidden rounded-xl object-cover object-center sm:w-full shadow-lg transition-transform duration-500 hover:scale-105"

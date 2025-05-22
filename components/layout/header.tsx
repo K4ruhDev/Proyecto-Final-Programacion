@@ -5,8 +5,8 @@ import type React from "react"
 import { Coffee } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-
 import { Button } from "@/components/ui/button"
+import LoginUser from "@/components/ui/login-user-button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Separator } from "@/components/ui/separator"
 import MenuIcon from "@/components/icons/menu-icon"
@@ -75,6 +75,7 @@ export default function Header() {
         <div className="ml-auto flex items-center gap-2">
           <SearchDialog />
           <CartDrawer />
+          <LoginUser />
         </div>
       </div>
     </header>

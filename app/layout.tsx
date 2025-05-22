@@ -1,65 +1,70 @@
 import type React from "react"
+import type { Metadata } from "next"
+import { Inter, Playfair_Display } from "next/font/google"
 import "./globals.css"
-
 import { ThemeProvider } from "@/components/theme-provider"
 import Header from "@/components/layout/header"
 import Footer from "@/components/layout/footer"
-import { Suspense } from "react"
 import { CartProvider } from "@/context/cart-context"
 import { Toaster } from "@/components/ui/toaster"
-import { Analytics } from "@vercel/analytics/react"
-import { SpeedInsights } from "@vercel/speed-insights/next"
 
-export const metadata = {
-  title: {
-    default: "Onsen Coffee - Tienda de Café de Especialidad",
-    template: "%s | Onsen Coffee",
-  },
-  description:
-    "Descubre el arte del café de especialidad con Onsen Coffee. Granos frescos, tostados artesanalmente y enviados directamente a tu puerta.",
-  keywords: ["café", "café de especialidad", "tienda de café", "café gourmet", "café online", "comprar café"],
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+})
+
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-playfair",
+  display: "swap",
+})
+
+export const metadata: Metadata = {
+  title: "Onsen Coffee - Café de especialidad",
+  description: "Descubre el mejor café de especialidad, tostado artesanalmente y enviado directamente a tu puerta.",
+  keywords: "café, café de especialidad, café orgánico, tienda de café, onsen coffee",
   authors: [{ name: "Onsen Coffee" }],
   creator: "Onsen Coffee",
   publisher: "Onsen Coffee",
-  icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon-16x16.png",
-    apple: "/apple-touch-icon.png",
+  openGraph: {
+    type: "website",
+    locale: "es_ES",
+    url: "https://onsencoffee.com",
+    title: "Onsen Coffee - Café de especialidad",
+    description: "Descubre el mejor café de especialidad, tostado artesanalmente y enviado directamente a tu puerta.",
+    siteName: "Onsen Coffee",
   },
-  manifest: "/site.webmanifest",
+  twitter: {
+    card: "summary_large_image",
+    title: "Onsen Coffee - Café de especialidad",
+    description: "Descubre el mejor café de especialidad, tostado artesanalmente y enviado directamente a tu puerta.",
+    creator: "@onsencoffee",
+  },
+  viewport: "width=device-width, initial-scale=1",
+  robots: "index, follow",
 }
 
 export default function RootLayout({
-  children,
-}: {
+                                     children,
+                                   }: {
   children: React.ReactNode
 }) {
   return (
-    <html lang="es" suppressHydrationWarning>
-      <body className="min-h-screen bg-background font-sans antialiased">
-        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-          <CartProvider>
-            <div className="relative flex min-h-screen flex-col">
-              <Header />
-              <main className="flex-1">
-                <Suspense
-                  fallback={
-                    <div className="flex items-center justify-center h-screen">
-                      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-600"></div>
-                    </div>
-                  }
-                >
-                  {children}
-                </Suspense>
-              </main>
-              <Footer />
-            </div>
-            <Toaster />
-          </CartProvider>
-        </ThemeProvider>
-        <Analytics />
-        <SpeedInsights />
+      <html lang="es" suppressHydrationWarning className={`${inter.variable} ${playfair.variable}`}>
+      <body className="font-sans">
+      <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
+        <CartProvider>
+          <div className="flex flex-col min-h-screen">
+            <Header />
+            <main className="flex-1">{children}</main>
+            <Footer />
+          </div>
+          <Toaster />
+        </CartProvider>
+      </ThemeProvider>
       </body>
-    </html>
+      </html>
   )
 }

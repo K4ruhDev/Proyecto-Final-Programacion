@@ -1,37 +1,44 @@
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import FeaturedProducts from "@/components/featured-products"
+import ProductCard from "@/components/products/product-card"
+import type { Product } from "@/lib/types"
 
-export default function FeaturedSection() {
+interface FeaturedSectionProps {
+  products: Product[]
+}
+
+export default function FeaturedSection({ products }: FeaturedSectionProps) {
   return (
-    <section className="py-12 md:py-24 bg-white">
+    <section className="py-16">
       <div className="container px-4 md:px-6">
-        <div className="flex flex-col items-center justify-center space-y-4 text-center">
-          <div className="space-y-2 animate-fadeIn">
-            <div className="inline-block rounded-lg bg-primary-100 px-3 py-1 text-sm text-primary-800">
-              Colección Destacada
-            </div>
-            <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight text-primary-900">
-              Nuestros Cafés Especiales
-            </h2>
-            <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-              Explora nuestra selección de los mejores cafés especiales de todo el mundo.
+        <div className="flex flex-col md:flex-row md:items-center justify-between mb-8">
+          <div>
+            <h2 className="text-3xl font-bold tracking-tight mb-2">Productos Destacados</h2>
+            <p className="text-muted-foreground max-w-2xl">
+              Descubre nuestra selección de cafés especiales, cuidadosamente seleccionados para ofrecerte una
+              experiencia única.
             </p>
           </div>
-        </div>
-        <FeaturedProducts />
-        <div className="flex justify-center mt-10">
-          <Link href="/products">
-            <Button
-              variant="outline"
-              className="border-primary-200 text-primary-700 hover:bg-primary-100 transition-all duration-300 transform hover:scale-105"
-            >
-              Ver Todos los Productos
+          <Button asChild variant="outline" className="mt-4 md:mt-0">
+            <Link href="/products">
+              Ver todos los productos
               <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-          </Link>
+            </Link>
+          </Button>
         </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {products.map((product, index) => (
+            <ProductCard key={product.id} product={product} index={index} />
+          ))}
+        </div>
+
+        {products.length === 0 && (
+          <div className="text-center py-12">
+            <p className="text-muted-foreground">No hay productos destacados disponibles en este momento.</p>
+          </div>
+        )}
       </div>
     </section>
   )

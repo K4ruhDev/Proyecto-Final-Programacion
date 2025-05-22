@@ -1,108 +1,127 @@
 "use client"
 
 import type React from "react"
+
 import { createContext, useContext, useState, useEffect } from "react"
-import type { CartItem, Product } from "@/lib/types"
-import { useToast } from "@/components/ui/use-toast"
+import type { Product, CartItem } from "@/lib/types"
 
 interface CartContextType {
   cartItems: CartItem[]
-  addToCart: (product: Product, quantity?: number) => void
-  removeFromCart: (productId: number) => void
-  updateQuantity: (productId: number, quantity: number) => void
-  clearCart: () => void
   cartCount: number
   cartTotal: number
   isCartOpen: boolean
-  setIsCartOpen: (isOpen: boolean) => void
+  addToCart: (product: Product, quantity?: number) => void
+  removeFromCart: (productId: number | string) => void
+  updateQuantity: (productId: number | string, quantity: number) => void
+  clearCart: () => void
+  toggleCart: () => void
 }
 
-const CartContext = createContext<CartContextType | undefined>(undefined)
+const CartContext = createContext<CartContextType>({
+  cartItems: [],
+  cartCount: 0,
+  cartTotal: 0,
+  isCartOpen: false,
+  addToCart: () => {},
+  removeFromCart: () => {},
+  updateQuantity: () => {},
+  clearCart: () => {},
+  toggleCart: () => {},
+})
 
-export function CartProvider({ children }: { children: React.ReactNode }) {
+export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   const [cartItems, setCartItems] = useState<CartItem[]>([])
   const [isCartOpen, setIsCartOpen] = useState(false)
-  const { toast } = useToast()
+  const [isInitialized, setIsInitialized] = useState(false)
 
-  // Load cart from localStorage on initial render
+  // Cargar carrito desde localStorage al iniciar
   useEffect(() => {
-    const savedCart = localStorage.getItem("cart")
-    if (savedCart) {
+    const storedCart = localStorage.getItem("cart")
+    if (storedCart) {
       try {
-        setCartItems(JSON.parse(savedCart))
+        setCartItems(JSON.parse(storedCart))
       } catch (error) {
-        console.error("Error parsing cart from localStorage:", error)
+        console.error("Error al cargar el carrito desde localStorage:", error)
       }
     }
+    setIsInitialized(true)
   }, [])
 
-  // Save cart to localStorage whenever it changes
+  // Guardar carrito en localStorage cuando cambie
   useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(cartItems))
-  }, [cartItems])
+    if (isInitialized) {
+      localStorage.setItem("cart", JSON.stringify(cartItems))
+    }
+  }, [cartItems, isInitialized])
 
+  // Calcular total y cantidad
+  const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0)
+  const cartTotal = cartItems.reduce((total, item) => total + item.price * item.quantity, 0)
+
+  // Añadir producto al carrito
   const addToCart = (product: Product, quantity = 1) => {
     setCartItems((prevItems) => {
-      const existingItem = prevItems.find((item) => item.id === product.id)
+      const existingItemIndex = prevItems.findIndex((item) => item.id === product.id)
 
-      if (existingItem) {
-        // Update quantity if item already exists
-        return prevItems.map((item) =>
-          item.id === product.id ? { ...item, quantity: item.quantity + quantity } : item,
-        )
+      if (existingItemIndex >= 0) {
+        // Si el producto ya está en el carrito, actualizar cantidad
+        const updatedItems = [...prevItems]
+        updatedItems[existingItemIndex].quantity += quantity
+        return updatedItems
       } else {
-        // Add new item
+        // Si el producto no está en el carrito, añadirlo
         return [...prevItems, { ...product, quantity }]
       }
     })
 
-    toast({
-      title: "Añadido al carrito",
-      description: `${product.name} ha sido añadido a tu carrito.`,
-    })
+    // Abrir el carrito al añadir un producto
+    setIsCartOpen(true)
   }
 
-  const removeFromCart = (productId: number) => {
+  // Eliminar producto del carrito
+  const removeFromCart = (productId: number | string) => {
     setCartItems((prevItems) => prevItems.filter((item) => item.id !== productId))
   }
 
-  const updateQuantity = (productId: number, quantity: number) => {
-    if (quantity < 1) return
+  // Actualizar cantidad de un producto
+  const updateQuantity = (productId: number | string, quantity: number) => {
+    if (quantity <= 0) {
+      removeFromCart(productId)
+      return
+    }
 
     setCartItems((prevItems) => prevItems.map((item) => (item.id === productId ? { ...item, quantity } : item)))
   }
 
+  // Vaciar carrito
   const clearCart = () => {
     setCartItems([])
   }
 
-  const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0)
-
-  const cartTotal = cartItems.reduce((total, item) => total + item.price * item.quantity, 0)
+  // Abrir/cerrar carrito
+  const toggleCart = () => {
+    setIsCartOpen((prev) => !prev)
+  }
 
   return (
-    <CartContext.Provider
-      value={{
-        cartItems,
-        addToCart,
-        removeFromCart,
-        updateQuantity,
-        clearCart,
-        cartCount,
-        cartTotal,
-        isCartOpen,
-        setIsCartOpen,
-      }}
-    >
-      {children}
-    </CartContext.Provider>
+      <CartContext.Provider
+          value={{
+            cartItems,
+            cartCount,
+            cartTotal,
+            isCartOpen,
+            addToCart,
+            removeFromCart,
+            updateQuantity,
+            clearCart,
+            toggleCart,
+          }}
+      >
+        {children}
+      </CartContext.Provider>
   )
 }
 
-export function useCart() {
-  const context = useContext(CartContext)
-  if (context === undefined) {
-    throw new Error("useCart must be used within a CartProvider")
-  }
-  return context
+export const useCart = () => {
+  return useContext(CartContext)
 }
