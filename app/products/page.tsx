@@ -222,7 +222,7 @@ export default function ProductsPage({ searchParams = {} }: ProductsPageProps) {
                       <Tabs
                           defaultValue={viewMode}
                           onValueChange={(value) => setViewMode(value as "grid" | "list")}
-                          className="w-[120px]"
+                          className="w-[70px]"
                       >
                         <TabsList className="grid w-full grid-cols-2 h-9">
                           <TabsTrigger value="grid" className="h-8 w-8 p-0">
@@ -304,62 +304,13 @@ export default function ProductsPage({ searchParams = {} }: ProductsPageProps) {
                           className={
                             viewMode === "grid"
                                 ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
-                                : "flex flex-col gap-4"
+                                : "flex flex-col gap-3"
                           }
                       >
                         {products.map((product, index) =>
                             viewMode === "grid" ? (
                                 <ProductCard key={product.id} product={product} index={index} />
-                            ) : (
-                                <div key={product.id}>
-                                  <div className="flex flex-col sm:flex-row gap-4 bg-white dark:bg-gray-800 rounded-lg overflow-hidden border border-primary-100 dark:border-gray-800 hover:shadow-lg transition-all duration-300">
-                                    <div className="sm:w-1/3 aspect-square relative">
-                                      <Image
-                                          src={product.image || "/placeholder.svg?height=400&width=400&text=Café"}
-                                          alt={product.name}
-                                          width={400}
-                                          height={400}
-                                          className="object-cover w-full h-full"
-                                      />
-                                      <div className="absolute top-2 left-2 flex flex-col gap-2">
-                                        {product.new && (
-                                            <Badge className="bg-primary-600 hover:bg-primary-700 text-white">Nuevo</Badge>
-                                        )}
-                                        {product.featured && (
-                                            <Badge className="bg-amber-500 hover:bg-amber-600 text-white">Destacado</Badge>
-                                        )}
-                                      </div>
-                                    </div>
-                                    <div className="flex-1 p-4 flex flex-col">
-                                      <div className="text-sm text-primary-600 dark:text-primary-400 mb-1">
-                                        {product.origin}
-                                      </div>
-                                      <Link href={`/products/${product.slug}`}>
-                                        <h3 className="font-heading font-semibold text-lg mb-1 hover:text-primary-600 transition-colors">
-                                          {product.name}
-                                        </h3>
-                                      </Link>
-                                      <div className="text-sm text-muted-foreground mb-2">
-                                        Tueste {product.roast} · {product.weight}
-                                      </div>
-                                      <p className="text-sm text-muted-foreground mb-4 line-clamp-2">{product.description}</p>
-                                      <div className="flex items-center justify-between mt-auto">
-                                        <div className="flex items-end gap-1.5">
-                                          <p className="text-lg font-semibold text-primary-900 dark:text-primary-300">
-                                            ${product.price.toFixed(2)}
-                                          </p>
-                                          {product.oldPrice && (
-                                              <p className="text-sm text-muted-foreground line-through">
-                                                ${product.oldPrice.toFixed(2)}
-                                              </p>
-                                          )}
-                                        </div>
-                                        <AddToCartButton product={product} disabled={product.stock <= 0} />
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                            ),
+                            ) : (<ProductCard product={product} index={0} viewMode="list" />),
                         )}
                       </div>
                   ) : !isLoading ? (

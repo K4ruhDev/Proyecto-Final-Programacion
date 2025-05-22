@@ -16,6 +16,7 @@ export interface Product {
   featured?: boolean
   new?: boolean
   stock?: number
+  oldPrice?: number
 }
 
 export interface CartItem extends Product {

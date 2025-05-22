@@ -187,7 +187,7 @@ function mapProductFromDb(dbProduct: any): Product {
         slug: dbProduct.slug,
         description: dbProduct.description || "",
         price: dbProduct.price,
-        oldPrice: dbProduct.sale_price || undefined,
+        oldPrice: dbProduct.old_price || undefined,
         image: dbProduct.image,
         category: dbProduct.category || "",
         origin: dbProduct.origin || "",
