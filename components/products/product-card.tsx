@@ -17,7 +17,7 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
     >
       <Link href={`/products/${product.slug}`} className="relative block aspect-square overflow-hidden">
         <Image
-          src={product.image || "/placeholder.svg"}
+          src={product.image || "/images/brazil.png"}
           alt={product.name}
           width={400}
           height={400}

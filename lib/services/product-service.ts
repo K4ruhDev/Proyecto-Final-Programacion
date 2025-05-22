@@ -85,7 +85,6 @@ export async function getProducts(filters: ProductFilter = {}): Promise<Product[
     return data.map(mapProductFromDb) || []
 }
 
-// Función para obtener productos con filtros (servidor)
 export async function getProductsServer(filters: ProductFilter = {}): Promise<Product[]> {
     const supabase = getServerSupabaseClient()
     let query = supabase.from("products").select("*")
@@ -181,7 +180,6 @@ export async function getProductBySlugServer(slug: string): Promise<Product | nu
     return mapProductFromDb(data)
 }
 
-// Función para mapear un producto de la base de datos al tipo Product
 function mapProductFromDb(dbProduct: any): Product {
     return {
         id: dbProduct.id,
@@ -190,7 +188,7 @@ function mapProductFromDb(dbProduct: any): Product {
         description: dbProduct.description || "",
         price: dbProduct.price,
         oldPrice: dbProduct.sale_price || undefined,
-        image: dbProduct.image_url || "/placeholder.svg?height=400&width=400&text=Café",
+        image: dbProduct.image,
         category: dbProduct.category || "",
         origin: dbProduct.origin || "",
         roast: dbProduct.roast || "",
