@@ -38,8 +38,8 @@ export default function HeroSection() {
               <Button
                 asChild
                 size="lg"
-                variant="outline"
-                className="bg-white/10 backdrop-blur-sm hover:bg-white/20 text-white border-white/30"
+                variant="secondary"
+                className="bg-primary-600 hover:bg-primary-700 text-white"
               >
                 <Link href="/about">Conocer más</Link>
               </Button>

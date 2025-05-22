@@ -38,7 +38,7 @@ export default function AddToCartButton({
     <Button
       onClick={handleAddToCart}
       disabled={isAdding}
-      className={`bg-primary-600 hover:bg-primary-700  ${className} transition-all duration-300 transform hover:scale-105`}
+      className={`bg-primary-600 hover:bg-primary-700 ${className} transition-all duration-300 transform hover:scale-105`}
     >
       {isAdding ? (
         "Añadiendo..."

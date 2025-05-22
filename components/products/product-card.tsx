@@ -119,7 +119,7 @@ export default function ProductCard({
                 {/* Badges */}
                 <div className="absolute top-2 left-2 flex flex-col gap-1">
                   {product.featured && (
-                      <Badge variant="default" className="bg-blue-600 hover:bg-blue-700 text-xs">
+                      <Badge variant="default" className="bg-amber-600 hover:bg-amber-700 text-xs">
                         Destacado
                       </Badge>
                   )}
@@ -197,28 +197,33 @@ export default function ProductCard({
                     {product.oldPrice ? (
                         <div className="flex items-center gap-2">
                       <span className="font-bold text-xl text-gray-900 dark:text-white">
-                        €{product.price.toFixed(2)}
+                        {product.price.toFixed(2)} €
                       </span>
                           <span className="text-sm text-muted-foreground line-through">
-                        €{product.oldPrice.toFixed(2)}
+                        {product.price.toFixed(2)} €
                       </span>
                         </div>
                     ) : (
                         <span className="font-bold text-xl text-gray-900 dark:text-white">
-                      €{product.price.toFixed(2)}
+                     {product.price.toFixed(2)} €
                     </span>
                     )}
                   </div>
-
-                  <Button
-                      variant="default"
-                      size="default"
-                      className="bg-green-600 hover:bg-green-700 text-white px-6"
-                      onClick={handleAddToCart}
-                  >
-                    <ShoppingBag className="h-4 w-4 mr-2" />
-                    Añadir al carrito
-                  </Button>
+                  {product.stock === 0 ? (
+                      <span className="text-red-500 text-sm font-bold">
+                  Sin stock
+                </span>
+                  ) : (
+                      <Button
+                          variant="default"
+                          size="sm"
+                          className="bg-green-600 hover:bg-green-700 text-white"
+                          onClick={handleAddToCart}
+                      >
+                        <ShoppingBag className="h-4 w-4 mr-1" />
+                        Añadir
+                      </Button>
+                  )}
                 </div>
               </div>
             </div>
@@ -250,7 +255,7 @@ export default function ProductCard({
             {/* Badges */}
             <div className="absolute top-3 left-3 flex flex-col gap-2">
               {product.featured && (
-                  <Badge variant="default"  className="bg-blue-600 hover:bg-blue-700 text-xs">
+                  <Badge variant="default"  className="bg-amber-600 hover:bg-amber-700 text-xs">
                     Destacado
                   </Badge>
               )}
@@ -332,30 +337,36 @@ export default function ProductCard({
             <div className="flex items-end justify-between mt-auto">
               <div>
                 {product.oldPrice ? (
-                    <div className="flex items-center gap-2">
-                  <span className="font-bold text-xl text-gray-900 dark:text-white">
-                    €{product.price.toFixed(2)}
-                  </span>
-                      <span className="text-sm text-muted-foreground line-through">
-                    €{product.oldPrice.toFixed(2)}
-                  </span>
-                    </div>
-                ) : (
+                  <div className="flex items-center gap-2">
                     <span className="font-bold text-xl text-gray-900 dark:text-white">
-                  €{product.price.toFixed(2)}
-                </span>
+                      {product.price.toFixed(2)} €
+                    </span>
+                    <span className="text-sm text-muted-foreground line-through">
+                      {product.oldPrice.toFixed(2)} €
+                    </span>
+                  </div>
+                ) : (
+                  <span className="font-bold text-xl text-gray-900 dark:text-white">
+                    {product.price.toFixed(2)} €
+                  </span>
                 )}
               </div>
 
-              <Button
+              {product.stock === 0 ? (
+                <span className="text-red-500 text-sm font-bold">
+                  Sin stock
+                </span>
+              ) : (
+                <Button
                   variant="default"
                   size="sm"
                   className="bg-green-600 hover:bg-green-700 text-white"
                   onClick={handleAddToCart}
-              >
-                <ShoppingBag className="h-4 w-4 mr-1" />
-                Añadir
-              </Button>
+                >
+                  <ShoppingBag className="h-4 w-4 mr-1" />
+                  Añadir
+                </Button>
+              )}
             </div>
           </div>
         </Link>

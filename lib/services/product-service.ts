@@ -1,7 +1,6 @@
 import { getSupabaseClient } from "@/lib/supabase/client"
 import { getServerSupabaseClient } from "@/lib/supabase/server"
 import type { Product } from "@/lib/types"
-
 export interface ProductFilter {
     category?: string
     origin?: string
