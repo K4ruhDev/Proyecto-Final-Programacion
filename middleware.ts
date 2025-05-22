@@ -13,7 +13,7 @@ export async function middleware(req: NextRequest) {
     // Si el usuario no está autenticado y está intentando acceder a rutas protegidas
     if (!session && (req.nextUrl.pathname.startsWith("/account") || req.nextUrl.pathname.startsWith("/admin"))) {
         const redirectUrl = req.nextUrl.clone()
-        redirectUrl.pathname = "/auth/login"
+        redirectUrl.pathname = "/auth/auth"
         redirectUrl.searchParams.set("redirect", req.nextUrl.pathname)
         return NextResponse.redirect(redirectUrl)
     }
@@ -22,7 +22,7 @@ export async function middleware(req: NextRequest) {
     if (req.nextUrl.pathname.startsWith("/admin")) {
         if (!session) {
             const redirectUrl = req.nextUrl.clone()
-            redirectUrl.pathname = "/auth/login"
+            redirectUrl.pathname = "/auth/auth"
             redirectUrl.searchParams.set("redirect", req.nextUrl.pathname)
             return NextResponse.redirect(redirectUrl)
         }

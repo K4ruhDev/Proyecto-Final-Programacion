@@ -9,7 +9,7 @@ export default function LoginUserButton() {
     const router = useRouter()
 
     const handleClick = () => {
-        router.push("/login")
+        router.push("/auth/login")
     }
 
     return (
