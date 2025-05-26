@@ -264,11 +264,11 @@ export default function ProductCard({
                     Nuevo
                   </Badge>
               )}
-              {product.oldPrice && (
-                  <Badge variant="default" className="bg-red-600 hover:bg-red-700 text-xs">
-                    -{discountPercentage}%
+                {product.oldPrice && (
+                  <Badge variant="default" className="bg-red-600 hover:bg-red-700 text-xs w-10">
+                  -{discountPercentage}%
                   </Badge>
-              )}
+                )}
             </div>
 
             {/* Quick actions */}

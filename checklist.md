@@ -1,0 +1,18 @@
+- ✅ La web principal tiene cabecera.
+- ✅ La web principal tiene menú con todas las opciones.
+- ✅ La web principal tiene nombre y logotipo.
+- ❌ La página principal tiene un SlideSide con varias imágenes que rotan.
+- ✅ La página principal tiene un footer con toda la información completa.
+- ✅ La página principal tiene un carrusel de los productos más vendidos.
+- ❌ En la web principal tengo listados de todas las entidades de mi BD.
+- ❌ Si pincho en cada entidad me lleva a la ficha principal de esa entidad.
+- ❌ La ficha de cliente muestra toda la información del cliente y de todas sus ventas.
+- ✅ La ficha de producto muestra toda la información del producto y de todas sus ventas.
+- ❌ Tengo un panel de administración en el que puedo dar de alta, modificar y eliminar cualquier entidad de mi BD.
+- ❌ En el panel de control puedo ver listados de todas las entidades de la BD.
+- ✅ Tengo registros reales de todas las entidades.
+- ❌ Todas las entidades susceptibles de tener imagen asociada las tienen.
+- ❌ Todas las imágenes son del mismo origen y no están aplastadas y tienen buena resolución.
+- ❌ La plantilla de la página principal es vistosa y tiene un buen diseño con una buena combinación de colores.
+- ✅ En la BD controlas con los métodos “existe” que todas las acciones sean correctas
+

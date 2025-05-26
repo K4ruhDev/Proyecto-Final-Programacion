@@ -35,8 +35,8 @@ export default async function HomePage() {
 }
 
 async function FeaturedProductsWrapper() {
-    // Obtener productos destacados
-    const featuredProducts = await getProductsServer({ featured: true, limit: 4 })
+    // Obtener más productos para el carrusel
+    const featuredProducts = await getProductsServer({ featured: true, limit: 8 })
     return <FeaturedSection products={featuredProducts} />
 }
 
@@ -58,17 +58,29 @@ function FeaturedSectionSkeleton() {
                     <Skeleton className="h-10 w-40 mt-4 md:mt-0" />
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    {Array(4)
-                        .fill(0)
-                        .map((_, i) => (
-                            <div key={i} className="border rounded-lg p-4">
-                                <Skeleton className="h-48 w-full rounded-md mb-4" />
-                                <Skeleton className="h-6 w-3/4 mb-2" />
-                                <Skeleton className="h-4 w-1/2 mb-4" />
-                                <Skeleton className="h-10 w-full" />
-                            </div>
-                        ))}
+                {/* Skeleton del carrusel */}
+                <div className="relative">
+                    <div className="flex gap-6 overflow-hidden">
+                        {Array(4)
+                            .fill(0)
+                            .map((_, i) => (
+                                <div key={i} className="flex-none w-full sm:w-1/2 lg:w-1/3 xl:w-1/4">
+                                    <div className="border rounded-lg p-4">
+                                        <Skeleton className="h-48 w-full rounded-md mb-4" />
+                                        <Skeleton className="h-6 w-3/4 mb-2" />
+                                        <Skeleton className="h-4 w-1/2 mb-4" />
+                                        <Skeleton className="h-10 w-full" />
+                                    </div>
+                                </div>
+                            ))}
+                    </div>
+                    {/* Skeleton de los botones de navegación */}
+                    <div className="absolute -left-4 top-1/2 -translate-y-1/2">
+                        <Skeleton className="h-10 w-10 rounded-full" />
+                    </div>
+                    <div className="absolute -right-4 top-1/2 -translate-y-1/2">
+                        <Skeleton className="h-10 w-10 rounded-full" />
+                    </div>
                 </div>
             </div>
         </section>

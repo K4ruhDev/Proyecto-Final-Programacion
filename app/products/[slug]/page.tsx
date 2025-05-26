@@ -187,8 +187,8 @@ function ProductQuantityWithAddToCart({ product }) {
 
   if (product.stock === 0) {
     return (
-      <div className="flex items-center gap-2 mb-4">
-        <span className="text-red-600 text-xl font-semibold">Sin stock</span>
+      <div className="flex gap-2 mb-2">
+        <span className="text-red-600 text-l font-semibold">Sin stock</span>
         <span className="text-s text-muted-foreground">
           Este producto no está disponible en este momento. Te avisaremos cuando vuelva a estar en stock.
           </span> 

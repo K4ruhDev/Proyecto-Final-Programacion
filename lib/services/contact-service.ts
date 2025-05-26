@@ -1,9 +1,9 @@
 import { getSupabaseClient } from "@/lib/supabase/client"
 import { getServerSupabaseClient } from "@/lib/supabase/server"
 
-// Función para enviar un mensaje de contacto (cliente)
-export async function sendContactMessage(name: string, email: string, subject: string, message: string) {
-    const supabase = getSupabaseClient()
+
+export async function sendContactMessage(name: string, email: string, subject: string | null, message: string) {
+    const supabase = getServerSupabaseClient();
     const { data, error } = await supabase
         .from("contact_messages")
         .insert([
@@ -12,17 +12,17 @@ export async function sendContactMessage(name: string, email: string, subject: s
                 email,
                 subject,
                 message,
-                is_read: false,
+                status: "pendiente",
+                created_at: new Date().toISOString(),
             },
         ])
-        .select()
+        .select();
 
     if (error) {
-        console.error("Error al enviar mensaje de contacto:", error)
-        throw error
+        console.error("Error al enviar mensaje de contacto:", error);
+        throw error;
     }
-
-    return data
+    return data;
 }
 
 // Función para suscribirse al boletín (cliente)

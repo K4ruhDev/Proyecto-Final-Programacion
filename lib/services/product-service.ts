@@ -179,6 +179,41 @@ export async function getProductBySlugServer(slug: string): Promise<Product | nu
     return mapProductFromDb(data)
 }
 
+// Obtener productos por categoría (cliente)
+export async function getProductsByCategory(category?: string): Promise<Product[]> {
+    const supabase = getSupabaseClient()
+    let query = supabase.from("products").select("*")
+    if (category && category !== "all") {
+        query = query.eq("category", category)
+    }
+    const { data, error } = await query
+    if (error) {
+        console.error("Error al obtener productos por categoría:", error)
+        return []
+    }
+    return data.map(mapProductFromDb) || []
+}
+
+// Obtener productos por búsqueda (cliente)
+export async function getProductsBySearch(queryStr: string): Promise<Product[]> {
+    const supabase = getSupabaseClient()
+    let query = supabase.from("products").select("*")
+    if (queryStr) {
+        query = query.or([
+            `name.ilike.%${queryStr}%`,
+            `description.ilike.%${queryStr}%`,
+            `origin.ilike.%${queryStr}%`,
+            `roast.ilike.%${queryStr}%`
+        ].join(','))
+    }
+    const { data, error } = await query
+    if (error) {
+        console.error("Error al buscar productos:", error)
+        return []
+    }
+    return data.map(mapProductFromDb) || []
+}
+
 function mapProductFromDb(dbProduct: any): Product {
     return {
         id: dbProduct.id,

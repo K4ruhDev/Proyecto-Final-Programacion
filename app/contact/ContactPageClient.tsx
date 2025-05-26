@@ -1,5 +1,7 @@
 "use client"
 
+import type React from "react"
+
 import { useState } from "react"
 import { MapPin, Phone, Mail, Clock } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -8,6 +10,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { useToast } from "@/components/ui/use-toast"
+import { sendContactMessage } from "@/lib/services/contact-service"
 
 export default function ContactPageClient() {
   const { toast } = useToast()
@@ -18,59 +21,44 @@ export default function ContactPageClient() {
     message: "",
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [errors, setErrors] = useState({})
+  const [errors, setErrors] = useState<Record<string, string>>({})
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
 
     // Clear error when user types
     if (errors[name]) {
-      setErrors((prev) => ({ ...prev, [name]: null }))
+      setErrors((prev) => ({ ...prev, [name]: "" }))
     }
   }
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   const validateForm = () => {
-    const newErrors: Record<string, string> = {};
+    const newErrors: Record<string, string> = {}
 
     if (!formData.name.trim()) {
-      newErrors.name = "El nombre es requerido";
-    } else if (formData.name.trim().length < 3) {
-      newErrors.name = "El nombre debe tener al menos 3 caracteres";
-    } else if (formData.name.trim().length > 50) {
-      newErrors.name = "El nombre debe tener menos de 50 caracteres";
+      newErrors.name = "El nombre es requerido"
     }
 
     if (!formData.email.trim()) {
-      newErrors.email = "El email es requerido";
-    } else if (!emailRegex.test(formData.email)) {
-      newErrors.email = "Email inválido";
-    } else if (formData.email.trim().length > 100) {
-      newErrors.email = "El email debe tener menos de 100 caracteres";
+      newErrors.email = "El email es requerido"
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = "Email inválido"
     }
 
     if (!formData.subject.trim()) {
-      newErrors.subject = "El asunto es requerido";
-    } else if (formData.subject.trim().length < 5) {
-      newErrors.subject = "El asunto debe tener al menos 5 caracteres";
-    } else if (formData.subject.trim().length > 50) {
-      newErrors.subject = "El asunto debe tener menos de 50 caracteres";
+      newErrors.subject = "El asunto es requerido"
     }
 
     if (!formData.message.trim()) {
-      newErrors.message = "El mensaje es requerido";
-    } else if (formData.message.trim().length < 10) {
-      newErrors.message = "El mensaje debe tener al menos 10 caracteres";
-    } else if (formData.message.trim().length > 500) {
-      newErrors.message = "El mensaje debe tener menos de 500 caracteres";
+      newErrors.message = "El mensaje es requerido"
     }
 
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
     if (!validateForm()) {
@@ -79,20 +67,30 @@ export default function ContactPageClient() {
 
     setIsSubmitting(true)
 
-    // Simulate form submission
-    setTimeout(() => {
+    try {
+      await sendContactMessage(formData.name, formData.email, formData.subject, formData.message)
+
       toast({
         title: "Mensaje enviado",
         description: "Gracias por contactarnos. Te responderemos lo antes posible.",
       })
+
       setFormData({
         name: "",
         email: "",
         subject: "",
         message: "",
       })
+    } catch (error) {
+      console.error("Error al enviar el mensaje:", error)
+      toast({
+        title: "Error",
+        description: "Hubo un problema al enviar tu mensaje. Por favor intenta de nuevo.",
+        variant: "destructive",
+      })
+    } finally {
       setIsSubmitting(false)
-    }, 1500)
+    }
   }
 
   return (
@@ -115,9 +113,11 @@ export default function ContactPageClient() {
           <div className="grid md:grid-cols-2 gap-10">
             {/* Contact Form */}
             <div className="animate-fadeInLeft">
-              <Card className="border border-primary-100">
+              <Card className="border border-primary-100 dark:border-dark-border">
                 <CardContent className="p-6">
-                  <h2 className="text-2xl font-bold mb-6 text-primary-900">Envíanos un Mensaje</h2>
+                  <h2 className="text-2xl font-bold mb-6 text-primary-900 dark:text-primary-300">
+                    Envíanos un Mensaje
+                  </h2>
                   <form onSubmit={handleSubmit} className="space-y-4">
                     <div className="space-y-2">
                       <Label htmlFor="name">Nombre</Label>
@@ -126,7 +126,7 @@ export default function ContactPageClient() {
                         name="name"
                         value={formData.name}
                         onChange={handleChange}
-                        className={`border-primary-200 ${errors.name ? "border-red-500" : ""}`}
+                        className={`border-primary-200 dark:border-dark-border ${errors.name ? "border-red-500" : ""}`}
                       />
                       {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
                     </div>
@@ -135,10 +135,10 @@ export default function ContactPageClient() {
                       <Input
                         id="email"
                         name="email"
-                        type="text"
+                        type="email"
                         value={formData.email}
                         onChange={handleChange}
-                        className={`border-primary-200 ${errors.email ? "border-red-500" : ""}`}
+                        className={`border-primary-200 dark:border-dark-border ${errors.email ? "border-red-500" : ""}`}
                       />
                       {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
                     </div>
@@ -149,7 +149,7 @@ export default function ContactPageClient() {
                         name="subject"
                         value={formData.subject}
                         onChange={handleChange}
-                        className={`border-primary-200 ${errors.subject ? "border-red-500" : ""}`}
+                        className={`border-primary-200 dark:border-dark-border ${errors.subject ? "border-red-500" : ""}`}
                       />
                       {errors.subject && <p className="text-red-500 text-sm mt-1">{errors.subject}</p>}
                     </div>
@@ -160,13 +160,13 @@ export default function ContactPageClient() {
                         name="message"
                         value={formData.message}
                         onChange={handleChange}
-                        className={`min-h-[150px] max-h-[400px] border-primary-200 ${errors.message ? "border-red-500" : ""}`}
-                      /> 
+                        className={`min-h-[150px] border-primary-200 dark:border-dark-border ${errors.message ? "border-red-500" : ""}`}
+                      />
                       {errors.message && <p className="text-red-500 text-sm mt-1">{errors.message}</p>}
                     </div>
                     <Button
                       type="submit"
-                      className="w-full bg-primary-600 hover:bg-primary-700"
+                      className="w-full bg-primary-600 hover:bg-primary-700 dark:bg-primary-700 dark:hover:bg-primary-600"
                       disabled={isSubmitting}
                     >
                       {isSubmitting ? (
@@ -205,25 +205,27 @@ export default function ContactPageClient() {
             {/* Contact Info */}
             <div className="space-y-8 animate-fadeInRight">
               <div>
-                <h2 className="text-2xl font-bold mb-6 text-primary-900">Información de Contacto</h2>
+                <h2 className="text-2xl font-bold mb-6 text-primary-900 dark:text-primary-300">
+                  Información de Contacto
+                </h2>
                 <div className="space-y-4">
                   <ContactInfo
-                    icon={<MapPin className="h-5 w-5 text-primary-600" />}
+                    icon={<MapPin className="h-5 w-5 text-primary-600 dark:text-primary-400" />}
                     title="Dirección"
                     content="Calle del Café 123, 28001 Madrid, España"
                   />
                   <ContactInfo
-                    icon={<Phone className="h-5 w-5 text-primary-600" />}
+                    icon={<Phone className="h-5 w-5 text-primary-600 dark:text-primary-400" />}
                     title="Teléfono"
                     content="+34 912 345 678"
                   />
                   <ContactInfo
-                    icon={<Mail className="h-5 w-5 text-primary-600" />}
+                    icon={<Mail className="h-5 w-5 text-primary-600 dark:text-primary-400" />}
                     title="Email"
                     content="info@onsencoffee.com"
                   />
                   <ContactInfo
-                    icon={<Clock className="h-5 w-5 text-primary-600" />}
+                    icon={<Clock className="h-5 w-5 text-primary-600 dark:text-primary-400" />}
                     title="Horario"
                     content="Lunes a Viernes: 9:00 - 18:00, Sábados: 10:00 - 14:00"
                   />
@@ -231,8 +233,8 @@ export default function ContactPageClient() {
               </div>
 
               <div>
-                <h2 className="text-2xl font-bold mb-4 text-primary-900">Nuestra Ubicación</h2>
-                <div className="rounded-lg overflow-hidden h-[300px] border border-primary-100">
+                <h2 className="text-2xl font-bold mb-4 text-primary-900 dark:text-primary-300">Nuestra Ubicación</h2>
+                <div className="rounded-lg overflow-hidden h-[300px] border border-primary-100 dark:border-dark-border">
                   <iframe
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12147.354030289067!2d-3.7037974302246107!3d40.41677007936128!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd422997800a3c81%3A0xc436dec1618c2269!2sMadrid%2C%20Spain!5e0!3m2!1sen!2sus!4v1621345678901!5m2!1sen!2sus"
                     width="100%"
@@ -250,10 +252,12 @@ export default function ContactPageClient() {
       </section>
 
       {/* FAQ Section */}
-      <section className="py-12 md:py-20 bg-primary-50">
+      <section className="py-12 md:py-20 bg-primary-50 dark:bg-gray-900">
         <div className="container px-4 md:px-6">
           <div className="text-center mb-10 animate-fadeIn">
-            <h2 className="text-3xl font-bold tracking-tighter text-primary-900">Preguntas Frecuentes</h2>
+            <h2 className="text-3xl font-bold tracking-tighter text-primary-900 dark:text-primary-300">
+              Preguntas Frecuentes
+            </h2>
             <p className="mt-4 text-muted-foreground md:text-lg max-w-[700px] mx-auto">
               Respuestas a las preguntas más comunes sobre nuestros productos y servicios.
             </p>
@@ -287,23 +291,26 @@ export default function ContactPageClient() {
   )
 }
 
-function ContactInfo({ icon, title, content }) {
+function ContactInfo({ icon, title, content }: { icon: React.ReactNode; title: string; content: string }) {
   return (
     <div className="flex items-start">
       <div className="mr-3 mt-1">{icon}</div>
       <div>
-        <h3 className="font-medium text-primary-900">{title}</h3>
+        <h3 className="font-medium text-primary-900 dark:text-primary-300">{title}</h3>
         <p className="text-muted-foreground">{content}</p>
       </div>
     </div>
   )
 }
 
-function FaqItem({ question, answer, index }) {
+function FaqItem({ question, answer, index }: { question: string; answer: string; index: number }) {
   return (
-    <Card className="border border-primary-100 animate-fadeInUp" style={{ animationDelay: `${index * 0.1}s` }}>
+    <Card
+      className="border border-primary-100 dark:border-dark-border animate-fadeInUp"
+      style={{ animationDelay: `${index * 0.1}s` }}
+    >
       <CardContent className="p-6">
-        <h3 className="text-lg font-bold mb-2 text-primary-900">{question}</h3>
+        <h3 className="text-lg font-bold mb-2 text-primary-900 dark:text-primary-300">{question}</h3>
         <p className="text-muted-foreground">{answer}</p>
       </CardContent>
     </Card>

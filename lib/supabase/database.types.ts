@@ -226,7 +226,7 @@ export interface Database {
                     email: string
                     subject: string | null
                     message: string
-                    is_read: boolean
+                    status: string
                     created_at: string
                 }
                 Insert: {
@@ -235,7 +235,7 @@ export interface Database {
                     email: string
                     subject?: string | null
                     message: string
-                    is_read?: boolean
+                    status: string
                     created_at?: string
                 }
                 Update: {
@@ -244,7 +244,7 @@ export interface Database {
                     email?: string
                     subject?: string | null
                     message?: string
-                    is_read?: boolean
+                    status: string
                     created_at?: string
                 }
             }
