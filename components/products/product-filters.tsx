@@ -92,7 +92,7 @@ export default function ProductFilters() {
               <Checkbox
                 id="all"
                 checked={currentCategory === "all"}
-                onCheckedChange={() => handleCategoryChange("all")}
+                onCheckedChange={() => handleCategoryChange("")}
               />
               <Label htmlFor="all" className="font-normal">
                 Todos

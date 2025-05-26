@@ -35,7 +35,6 @@ export default async function HomePage() {
 }
 
 async function FeaturedProductsWrapper() {
-    // Obtener más productos para el carrusel
     const featuredProducts = await getProductsServer({ featured: true, limit: 8 })
     return <FeaturedSection products={featuredProducts} />
 }

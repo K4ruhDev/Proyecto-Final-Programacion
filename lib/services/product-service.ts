@@ -78,9 +78,11 @@ export async function getProducts(filters: ProductFilter = {}): Promise<Product[
 
     if (error) {
         console.error("Error al obtener productos:", error)
-        return []
+        throw error
     }
 
+    if (!data) return []
+    
     return data.map(mapProductFromDb) || []
 }
 
