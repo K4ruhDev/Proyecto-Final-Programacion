@@ -37,6 +37,8 @@ export default function FeaturedSection({ products }: FeaturedSectionProps) {
 
         {products.length > 0 ? (
           <Carousel
+          autoplay
+          autoplayInterval={5000}
             opts={{
               align: "start",
               loop: true,

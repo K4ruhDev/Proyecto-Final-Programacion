@@ -12,7 +12,7 @@
 - ❌ En el panel de control puedo ver listados de todas las entidades de la BD.
 - ✅ Tengo registros reales de todas las entidades.
 - ❌ Todas las entidades susceptibles de tener imagen asociada las tienen.
-- ❌ Todas las imágenes son del mismo origen y no están aplastadas y tienen buena resolución.
-- ❌ La plantilla de la página principal es vistosa y tiene un buen diseño con una buena combinación de colores.
+-✅ Todas las imágenes son del mismo origen y no están aplastadas y tienen buena resolución.
+- ✅ La plantilla de la página principal es vistosa y tiene un buen diseño con una buena combinación de colores.
 - ✅ En la BD controlas con los métodos “existe” que todas las acciones sean correctas
 
