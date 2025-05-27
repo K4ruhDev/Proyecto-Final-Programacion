@@ -58,10 +58,10 @@ const CartContext = createContext<CartContextType>({
 
 // Códigos de descuento válidos
 const DISCOUNT_CODES = {
-  "WELCOME10": 0.10,
-  "SAVE20": 0.20,
-  "FIRST15": 0.15,
-  "COFFEE5": 0.05,
+  "ONSEN15": 0.15,
+  "ESTADOINICIAL": 0.5,
+  "ECLIPSE1": 0.1,
+  "ELCHIVO5": 0.05,
 }
 
 export const CartProvider = ({ children }: { children: React.ReactNode }) => {

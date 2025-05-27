@@ -52,7 +52,6 @@ export default function EnhancedCartDrawer() {
   const [discountError, setDiscountError] = useState("")
   const [discountSuccess, setDiscountSuccess] = useState(false)
 
-  // Prevent hydration errors
   useEffect(() => {
     setIsMounted(true)
   }, [])
