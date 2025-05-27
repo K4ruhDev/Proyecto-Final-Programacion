@@ -146,7 +146,7 @@ export function ProductForm({ initialData }: ProductFormProps) {
         })
       }
 
-      router.push("/admin")
+      router.push("/panel")
       router.refresh()
     } catch (error: any) {
       setError(error.message || "Error al guardar el producto. Por favor intenta de nuevo.")
@@ -411,7 +411,7 @@ export function ProductForm({ initialData }: ProductFormProps) {
             />
 
             <div className="flex justify-end gap-4">
-              <Button type="button" variant="outline" onClick={() => router.push("/admin")}>
+              <Button type="button" variant="outline" onClick={() => router.push("/panel")}>
                 Cancelar
               </Button>
               <Button type="submit" disabled={isLoading}>

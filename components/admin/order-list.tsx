@@ -171,7 +171,7 @@ export function AdminOrderList() {
                     <TableCell className="text-right">${order.total.toFixed(2)}</TableCell>
                     <TableCell className="text-right">
                       <Button variant="outline" size="sm" asChild>
-                        <Link href={`/admin/orders/${order.id}`}>
+                        <Link href={`/panel/orders/${order.id}`}>
                           <Eye className="mr-2 h-4 w-4" />
                           Ver
                         </Link>

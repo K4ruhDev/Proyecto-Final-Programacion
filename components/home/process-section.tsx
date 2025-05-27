@@ -80,7 +80,7 @@ export default function ProcessSection() {
           <div className="order-1 lg:order-2 animate-slideUp" style={{ animationDelay: "0.8s" }}>
             <div className="relative h-80 md:h-96 rounded-lg overflow-hidden">
               <Image
-                src="/placeholder.svg?height=600&width=800&text=Proceso+de+Tostado"
+                src="/images/coffee-origins.png"
                 alt="Proceso de tostado de café"
                 fill
                 className="object-cover"

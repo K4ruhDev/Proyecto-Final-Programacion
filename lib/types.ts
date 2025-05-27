@@ -17,6 +17,8 @@ export interface Product {
   new?: boolean
   stock?: number
   oldPrice?: number
+  rating?: number
+  reviews?: number
 }
 
 export interface CartItem extends Product {
@@ -46,4 +48,50 @@ export interface Review {
   rating: number
   date: string
   comment: string
+}
+
+
+export type ContactMessageStatus = 'new' | 'read' | 'replied' | 'archived'
+
+export interface ContactMessage {
+  id: number
+  created_at: string | null
+  name: string
+  email: string
+  subject: string
+  message: string
+  status: ContactMessageStatus
+}
+
+export interface ContactMessageInsert {
+  name: string
+  email: string
+  subject: string
+  message: string
+  status?: ContactMessageStatus
+}
+
+export interface ContactMessageUpdate {
+  name?: string
+  email?: string
+  subject?: string
+  message?: string
+  status?: ContactMessageStatus
+}
+
+// Para el formulario del cliente
+export interface ContactFormData {
+  name: string
+  email: string
+  subject: string
+  message: string
+}
+
+// Para la respuesta de la API
+export interface ContactApiResponse {
+  success: boolean
+  message?: string
+  data?: ContactMessage[]
+  error?: string
+  details?: string
 }

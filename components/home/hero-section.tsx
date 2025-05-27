@@ -1,7 +1,8 @@
 import Link from "next/link"
-import Image from "next/image"
+
 import { Button } from "@/components/ui/button"
 import { ArrowRight } from "lucide-react"
+import ImageSlider from "@/components/ui/image-slider"
 
 export default function HeroSection() {
   return (
@@ -9,13 +10,7 @@ export default function HeroSection() {
       <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/50 z-10" />
 
       <div className="relative h-[600px] md:h-[700px]">
-        <Image
-          src="/images/hero-coffee.png"
-          alt="Onsen Coffee"
-          fill
-          priority
-          className="object-cover"
-        />
+        <ImageSlider />
       </div>
 
       <div className="absolute inset-0 z-20 flex items-center">

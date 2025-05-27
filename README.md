@@ -1,6 +1,6 @@
 # Onsen Coffee - Tienda de Café de Especialidad
 
-![Onsen Coffee](public/images/hero-coffee.png)
+![Onsen Coffee](public/images/hero-coffee1.png)
 
 ## Características Principales
 

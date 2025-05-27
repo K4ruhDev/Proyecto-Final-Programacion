@@ -18,7 +18,7 @@ export function OrderStatusForm({ orderId, currentStatus }: OrderStatusFormProps
   const { toast } = useToast()
   const [status, setStatus] = useState<string>(currentStatus)
   const [error, setError] = useState<string | null>(null)
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setisLoading] = useState(false)
 
   async function onSubmit() {
     if (status === currentStatus) {
@@ -29,7 +29,7 @@ export function OrderStatusForm({ orderId, currentStatus }: OrderStatusFormProps
       return
     }
 
-    setIsLoading(true)
+    setisLoading(true)
     setError(null)
 
     try {
@@ -46,7 +46,7 @@ export function OrderStatusForm({ orderId, currentStatus }: OrderStatusFormProps
     } catch (error: any) {
       setError(error.message || "Error al actualizar el estado. Por favor intenta de nuevo.")
     } finally {
-      setIsLoading(false)
+      setisLoading(false)
     }
   }
 

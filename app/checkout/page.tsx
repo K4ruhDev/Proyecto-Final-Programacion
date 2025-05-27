@@ -23,7 +23,11 @@ export default function CheckoutPage() {
   const [paymentMethod, setPaymentMethod] = useState("card")
   const [formErrors, setFormErrors] = useState({})
 
-  const shipping = 5.99
+  let shipping = 5.99
+  if (cartTotal > 50) {
+    shipping = 0
+  }
+
   const total = cartTotal + shipping
 
   const validateForm = (formData) => {
@@ -42,7 +46,6 @@ export default function CheckoutPage() {
     if (!formData.get("postalCode").trim()) errors.postalCode = "El código postal es requerido"
     if (!formData.get("country").trim()) errors.country = "El país es requerido"
 
-    // Payment information validation
     if (paymentMethod === "card") {
       if (!formData.get("cardNumber").trim()) errors.cardNumber = "El número de tarjeta es requerido"
       if (!formData.get("expiryDate").trim()) errors.expiryDate = "La fecha de expiración es requerida"
@@ -358,9 +361,9 @@ export default function CheckoutPage() {
                       <span>{cartTotal.toFixed(2)} €</span>
                     </div>
                     <div className="flex justify-between">
-                      <span>Envío</span>
-                      <span>{shipping.toFixed(2)} €</span>
-                    </div>
+                    <span>Envío</span>
+                    <span>{shipping === 0 ? "Envío gratis" : `${shipping.toFixed(2)} €`}</span>
+                  </div>
                     <Separator className="my-2" />
                     <div className="flex justify-between font-medium text-lg">
                       <span>Total</span>

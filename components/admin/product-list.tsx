@@ -95,7 +95,7 @@ export function AdminProductList() {
             <CardDescription>Gestiona el catálogo de productos</CardDescription>
           </div>
           <Button asChild>
-            <Link href="/admin/products/new">
+            <Link href="/panel/products/new">
               <Plus className="mr-2 h-4 w-4" />
               Nuevo producto
             </Link>
@@ -175,7 +175,7 @@ export function AdminProductList() {
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-2">
                         <Button variant="outline" size="icon" asChild>
-                          <Link href={`/admin/products/${product.id}`}>
+                          <Link href={`/panel/products/${product.id}`}>
                             <Edit className="h-4 w-4" />
                             <span className="sr-only">Editar</span>
                           </Link>
