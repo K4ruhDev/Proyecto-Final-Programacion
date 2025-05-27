@@ -31,34 +31,36 @@ export function AdminOrderList() {
   const [searchTerm, setSearchTerm] = useState("")
   const [statusFilter, setStatusFilter] = useState<string>("all")
 
-  useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const { data, error } = await supabase
-          .from("orders")
-          .select(`
-            *,
-            profiles (
-              full_name,
-              email
-            )
-          `)
-          .order("created_at", { ascending: false })
+ useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        setLoading(true)
+        const { data, error } = await supabase
+          .from("orders")
+          .select(`
+            *,
+            profiles (
+              full_name,
+              email
+            )
+          `)
+          .order("created_at", { ascending: false })
+        
+        if (error) {
+          throw error
+        }
+        console.log("Orders data with profiles:", data) // New debug log
+        setOrders(data || [])
+      } catch (error: any) {
+        console.error("Error fetching orders:", error) // New debug log
+        setError(error.message)
+      } finally {
+        setLoading(false)
+      }
+    }
 
-        if (error) {
-          throw error
-        }
-
-        setOrders(data || [])
-      } catch (error: any) {
-        setError(error.message)
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchOrders()
-  }, [])
+    fetchOrders()
+  }, [])
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -168,10 +170,10 @@ export function AdminOrderList() {
                       </div>
                     </TableCell>
                     <TableCell>{getStatusBadge(order.status)}</TableCell>
-                    <TableCell className="text-right">${order.total.toFixed(2)}</TableCell>
+                    <TableCell className="text-right">{order.total.toFixed(2)} €</TableCell>
                     <TableCell className="text-right">
                       <Button variant="outline" size="sm" asChild>
-                        <Link href={`/panel/orders/${order.id}`}>
+                        <Link href={`/admin/orders/${order.id}`}>
                           <Eye className="mr-2 h-4 w-4" />
                           Ver
                         </Link>

@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { supabase } from "@/lib/supabase/client"
+import { getProducts } from "@/lib/services/product-service" // Importamos la función del controlador
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
@@ -11,17 +11,8 @@ import { Loader2, Plus, Search, Edit, Trash2 } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useToast } from "@/components/ui/use-toast"
-
-interface Product {
-  id: number
-  name: string
-  price: number
-  category: string
-  stock: number
-  featured: boolean | null
-  new: boolean | null
-  slug: string
-}
+import { supabase } from "@/lib/supabase/client"
+import type { Product } from "@/lib/types"
 
 export function AdminProductList() {
   const router = useRouter()
@@ -34,17 +25,29 @@ export function AdminProductList() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const { data, error } = await supabase
+        setLoading(true)
+        const { data: directData, error: directError } = await supabase
           .from("products")
-          .select("id, name, price, category, stock, featured, new, slug")
+          .select("id, name, price,stock, category, featured, new, slug")
           .order("name")
 
-        if (error) {
-          throw error
+        if (directError) {
+          throw directError
         }
 
-        setProducts(data || [])
+        console.log("Direct query result:", directData) // Debug
+        
+        // Ahora probamos con el controlador
+        const controllerData = await getProducts({
+          sort: "name-asc"
+        })
+        
+        console.log("Controller result:", controllerData) // Debug
+        
+        // Usamos los datos del controlador
+        setProducts(controllerData)
       } catch (error: any) {
+        console.error("Error fetching products:", error) // Debug
         setError(error.message)
       } finally {
         setLoading(false)
@@ -80,6 +83,7 @@ export function AdminProductList() {
     }
   }
 
+  // Filtrado local de productos basado en el término de búsqueda
   const filteredProducts = products.filter(
     (product) =>
       product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -95,7 +99,7 @@ export function AdminProductList() {
             <CardDescription>Gestiona el catálogo de productos</CardDescription>
           </div>
           <Button asChild>
-            <Link href="/panel/products/new">
+            <Link href="/admin/products/new">
               <Plus className="mr-2 h-4 w-4" />
               Nuevo producto
             </Link>
@@ -143,7 +147,7 @@ export function AdminProductList() {
                   <TableRow key={product.id}>
                     <TableCell className="font-medium">{product.name}</TableCell>
                     <TableCell>{product.category}</TableCell>
-                    <TableCell className="text-right">${product.price.toFixed(2)}</TableCell>
+                    <TableCell className="text-right">{product.price.toFixed(2)} €</TableCell>
                     <TableCell className="text-right">
                       <span className={product.stock < 5 ? "text-red-500 font-medium" : ""}>{product.stock}</span>
                     </TableCell>
@@ -175,7 +179,7 @@ export function AdminProductList() {
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-2">
                         <Button variant="outline" size="icon" asChild>
-                          <Link href={`/panel/products/${product.id}`}>
+                          <Link href={`/admin/products/${product.id}`}>
                             <Edit className="h-4 w-4" />
                             <span className="sr-only">Editar</span>
                           </Link>

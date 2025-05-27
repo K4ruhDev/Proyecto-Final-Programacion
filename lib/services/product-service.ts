@@ -15,6 +15,16 @@ export interface ProductFilter {
     offset?: number
 }
 
+export async function getProductsSimple(): Promise<any[]> {
+    const supabase = getSupabaseClient()
+    const { data, error } = await supabase
+        .from("products")
+        .select("*")
+    
+    if (error) throw error
+    return data || []
+}
+
 // Función para obtener productos con filtros (cliente)
 export async function getProducts(filters: ProductFilter = {}): Promise<Product[]> {
     const supabase = getSupabaseClient()

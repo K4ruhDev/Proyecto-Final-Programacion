@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/server"
+import { getServerSupabaseClient } from "@/lib/supabase/server"
 import { notFound, redirect } from "next/navigation"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
@@ -7,29 +7,9 @@ import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { formatDate } from "@/lib/utils"
 import { OrderStatusForm } from "@/components/admin/order-status-form"
-import { AuthCheck } from "@/components/auth/auth-check"
 
 export default async function AdminOrderDetailsPage({ params }: { params: { id: string } }) {
-  const supabase = createClient()
-
-  // Verificar si el usuario está autenticado y es admin
-  const {
-    data: { session },
-  } = await supabase.auth.getSession()
-  if (!session) {
-    redirect(`/auth/login?redirect=${encodeURIComponent(`/admin/orders/${params.id}`)}`)
-  }
-
-  // Verificar si el usuario es admin
-  const { data: profile, error: profileError } = await supabase
-    .from("profiles")
-    .select("role")
-    .eq("id", session.user.id)
-    .single()
-
-  if (profileError || profile?.role !== "admin") {
-    redirect("/")
-  }
+  const supabase = getServerSupabaseClient()
 
   // Obtener el pedido
   const { data: order, error: orderError } = await supabase
@@ -97,7 +77,6 @@ export default async function AdminOrderDetailsPage({ params }: { params: { id: 
   }
 
   return (
-    <AuthCheck adminOnly>
       <div className="container py-10 md:py-16">
         <div className="flex flex-col gap-8">
           <div className="flex items-center justify-between">
@@ -218,6 +197,5 @@ export default async function AdminOrderDetailsPage({ params }: { params: { id: 
           </div>
         </div>
       </div>
-    </AuthCheck>
   )
 }

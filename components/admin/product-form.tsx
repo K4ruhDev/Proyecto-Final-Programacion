@@ -15,7 +15,16 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Card, CardContent } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { useToast } from "@/components/ui/use-toast"
-import { slugify } from "@/lib/utils"
+
+// Create slugify function directly in the component
+const slugify = (text: string): string => {
+  return text
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, '') // Remove special characters
+    .replace(/[\s_-]+/g, '-') // Replace spaces and underscores with hyphens
+    .replace(/^-+|-+$/g, '') // Remove leading/trailing hyphens
+}
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -146,7 +155,7 @@ export function ProductForm({ initialData }: ProductFormProps) {
         })
       }
 
-      router.push("/panel")
+      router.push("/admin")
       router.refresh()
     } catch (error: any) {
       setError(error.message || "Error al guardar el producto. Por favor intenta de nuevo.")
@@ -411,7 +420,7 @@ export function ProductForm({ initialData }: ProductFormProps) {
             />
 
             <div className="flex justify-end gap-4">
-              <Button type="button" variant="outline" onClick={() => router.push("/panel")}>
+              <Button type="button" variant="outline" onClick={() => router.push("/admin")}>
                 Cancelar
               </Button>
               <Button type="submit" disabled={isLoading}>
