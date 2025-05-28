@@ -122,7 +122,7 @@ export function UserOrders() {
                   <TableCell className="font-medium">{order.id}</TableCell>
                   <TableCell>{formatDate(order.created_at)}</TableCell>
                   <TableCell>{getStatusBadge(order.status)}</TableCell>
-                  <TableCell className="text-right">${order.total.toFixed(2)}</TableCell>
+                  <TableCell className="text-right">{order.total.toFixed(2)} €</TableCell>
                   <TableCell>
                     <Button variant="outline" size="sm" asChild>
                       <Link href={`/account/orders/${order.id}`}>Ver detalles</Link>

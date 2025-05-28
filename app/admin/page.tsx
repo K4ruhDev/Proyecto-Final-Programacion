@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { AdminProductList } from "@/components/admin/product-list"
 import { AdminOrderList } from "@/components/admin/order-list"
+import ClientList from "@/components/admin/client-list";
 
 export const metadata: Metadata = {
   title: "Panel de Administración",
@@ -18,12 +19,16 @@ export default function AdminPage() {
             <TabsList className="mb-8">
               <TabsTrigger value="products">Productos</TabsTrigger>
               <TabsTrigger value="orders">Pedidos</TabsTrigger>
+              <TabsTrigger value="clientes">Clientes</TabsTrigger>
             </TabsList>
             <TabsContent value="products">
               <AdminProductList />
             </TabsContent>
             <TabsContent value="orders">
               <AdminOrderList />
+            </TabsContent>
+            <TabsContent value="clientes">
+              <ClientList />
             </TabsContent>
           </Tabs>
         </div>

@@ -31,36 +31,35 @@ export function AdminOrderList() {
   const [searchTerm, setSearchTerm] = useState("")
   const [statusFilter, setStatusFilter] = useState<string>("all")
 
- useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        setLoading(true)
-        const { data, error } = await supabase
-          .from("orders")
-          .select(`
-            *,
-            profiles (
-              full_name,
-              email
-            )
-          `)
-          .order("created_at", { ascending: false })
-        
-        if (error) {
-          throw error
-        }
-        console.log("Orders data with profiles:", data) // New debug log
-        setOrders(data || [])
-      } catch (error: any) {
-        console.error("Error fetching orders:", error) // New debug log
-        setError(error.message)
-      } finally {
-        setLoading(false)
-      }
-    }
+    useEffect(() => {
+        const fetchOrders = async () => {
+            try {
+                setLoading(true)
+                const {data, error} = await supabase
+                    .from("orders")
+                    .select(`
+             *,
+             profiles (
+               full_name,
+               email
+             )
+           `)
+                    .order("created_at", {ascending: false})
 
-    fetchOrders()
-  }, [])
+                if (error) {
+                    throw error
+                }
+                setOrders(data || [])
+            } catch (error: any) {
+                console.error("Error fetching orders:", error)
+                setError(error.message)
+            } finally {
+                setLoading(false)
+            }
+        }
+
+        fetchOrders()
+ }, [])
 
   const getStatusBadge = (status: string) => {
     switch (status) {

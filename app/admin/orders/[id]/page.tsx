@@ -107,7 +107,7 @@ export default async function AdminOrderDetailsPage({ params }: { params: { id: 
                   </div>
                   <div className="flex justify-between">
                     <dt className="font-medium">Total:</dt>
-                    <dd className="font-bold">${order.total.toFixed(2)}</dd>
+                    <dd className="font-bold">{order.total.toFixed(2)} €</dd>
                   </div>
                 </dl>
               </CardContent>
@@ -166,9 +166,9 @@ export default async function AdminOrderDetailsPage({ params }: { params: { id: 
                             {item.products?.name}
                           </Link>
                         </TableCell>
-                        <TableCell className="text-right">${item.price.toFixed(2)}</TableCell>
+                        <TableCell className="text-right">{item.price.toFixed(2)} €</TableCell>
                         <TableCell className="text-right">{item.quantity}</TableCell>
-                        <TableCell className="text-right">${(item.price * item.quantity).toFixed(2)}</TableCell>
+                        <TableCell className="text-right">{(item.price * item.quantity).toFixed(2)} €</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
