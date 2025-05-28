@@ -37,7 +37,7 @@ export default function ContactList() {
         const getContacts = async () => {
             try {
                 setIsLoading(true)
-                const { data: contacts, error } = await supabase
+                const { data, error } = await supabase
                     .from('contact_messages')
                     .select('*')
                     .order('created_at', { ascending: false })
@@ -46,8 +46,7 @@ export default function ContactList() {
                     console.error('Error:', error)
                     return
                 }
-
-                setContacts(contacts || [])
+                setContacts(data || [])
             } catch (error) {
                 console.error('Error:', error)
             } finally {
