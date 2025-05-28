@@ -48,6 +48,9 @@ export default function Header() {
               <NavLink href="/contact" mobile active={pathname === "/contact"}>
                 Contacto
               </NavLink>
+              <NavLink href="/admin" mobile active={pathname === "/admin"}>
+                Admin
+              </NavLink>
             </nav>
           </SheetContent>
         </Sheet>
@@ -70,6 +73,9 @@ export default function Header() {
           </NavLink>
           <NavLink href="/contact" active={pathname === "/contact"}>
             Contacto
+          </NavLink>
+          <NavLink href="/admin"  active={pathname === "/admin"}>
+            Admin
           </NavLink>
         </nav>
         <div className="ml-auto flex items-center gap-2">
