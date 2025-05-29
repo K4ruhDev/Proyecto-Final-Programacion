@@ -40,7 +40,6 @@ export default function BlogPage() {
     "Conocimiento del Café",
     "Ciencia del Café",
     "Sostenibilidad",
-    "Cultura del Café",
   ]
 
   const handleCategoryChange = (value) => {

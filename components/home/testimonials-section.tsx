@@ -8,7 +8,7 @@ const testimonials = [
     role: "Barista profesional",
     content:
       "El café de Onsen Coffee es simplemente excepcional. Los sabores son complejos y equilibrados, y la frescura es incomparable. Lo recomiendo a todos mis clientes.",
-    avatar: "/placeholder.svg?height=80&width=80&text=MG",
+    avatar: "https://plus.unsplash.com/premium_photo-1708110770130-73646eb669d5?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NDl8fGJvYnxlbnwwfHwwfHx8MA%3D%3D",
     rating: 5,
   },
   {
@@ -17,7 +17,7 @@ const testimonials = [
     role: "Entusiasta del café",
     content:
       "Desde que descubrí Onsen Coffee, no puedo tomar otro café. La calidad es constante y el servicio al cliente es excelente. Siempre recibo mi pedido a tiempo y en perfectas condiciones.",
-    avatar: "/placeholder.svg?height=80&width=80&text=CR",
+    avatar: "https://images.unsplash.com/photo-1599566150163-29194dcaad36?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     rating: 5,
   },
   {
@@ -26,7 +26,7 @@ const testimonials = [
     role: "Chef y propietaria de restaurante",
     content:
       "Utilizamos exclusivamente café de Onsen Coffee en nuestro restaurante. Nuestros clientes siempre comentan lo delicioso que es el café que servimos. La calidad y consistencia son inigualables.",
-    avatar: "/placeholder.svg?height=80&width=80&text=LM",
+    avatar: "https://plus.unsplash.com/premium_photo-1690407617542-2f210cf20d7e?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     rating: 5,
   },
 ]

@@ -7,7 +7,6 @@ import TestimonialsSection from "@/components/home/testimonials-section"
 import BlogPreviewSection from "@/components/home/blog-preview-section"
 import NewsletterSection from "@/components/home/newsletter-section"
 import { getProductsServer } from "@/lib/services/product-service"
-import { getBlogPostsServer } from "@/lib/services/blog-service"
 import { Skeleton } from "@/components/ui/skeleton"
 
 export default async function HomePage() {
@@ -41,8 +40,7 @@ async function FeaturedProductsWrapper() {
 
 async function BlogPreviewWrapper() {
     // Obtener posts recientes del blog
-    const recentPosts = await getBlogPostsServer({ limit: 3 })
-    return <BlogPreviewSection posts={recentPosts} />
+    return <BlogPreviewSection />
 }
 
 function FeaturedSectionSkeleton() {

@@ -7,9 +7,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
-import { ArrowLeft, Calendar, Mail, User, MessageSquare, Loader2, Check, Reply, Archive } from "lucide-react"
+import { ArrowLeft, Calendar, Mail, User, MessageSquare, Loader2, Check, Reply, Archive, Trash2 } from "lucide-react"
 import { formatDate } from "@/lib/utils"
-import { markContactMessageAsReadServer, markContactMessageAsRepliedServer, archiveContactMessageServer } from "@/lib/services/contact-service"
 import { toast } from "sonner"
 
 interface Contact {
@@ -24,7 +23,7 @@ interface Contact {
 
 const statusColors = {
     new: "bg-blue-500 hover:bg-blue-600",
-    read: "bg-gray-500 hover:bg-gray-600", 
+    read: "bg-gray-500 hover:bg-gray-600",
     replied: "bg-green-500 hover:bg-green-600",
     archived: "bg-yellow-500 hover:bg-yellow-600"
 }
@@ -32,7 +31,7 @@ const statusColors = {
 const statusLabels = {
     new: "Nuevo",
     read: "Leído",
-    replied: "Respondido", 
+    replied: "Respondido",
     archived: "Archivado"
 }
 
@@ -40,7 +39,7 @@ export default function ContactDetailPage() {
     const params = useParams()
     const router = useRouter()
     const contactId = params.id as string
-    
+
     const [contact, setContact] = useState<Contact | null>(null)
     const [isLoading, setIsLoading] = useState(true)
     const [isUpdating, setIsUpdating] = useState(false)
@@ -57,6 +56,7 @@ export default function ContactDetailPage() {
 
                 if (error) {
                     console.error('Error:', error)
+                    toast.error('Error al cargar el mensaje')
                     return
                 }
 
@@ -64,10 +64,11 @@ export default function ContactDetailPage() {
 
                 // Marcar como leído automáticamente si es nuevo
                 if (data && data.status === 'new') {
-                    await markAsRead(data.id.toString(), false)
+                    await markAsRead(data.id, false)
                 }
             } catch (error) {
                 console.error('Error:', error)
+                toast.error('Error inesperado al cargar el mensaje')
             } finally {
                 setIsLoading(false)
             }
@@ -78,10 +79,19 @@ export default function ContactDetailPage() {
         }
     }, [contactId])
 
-    const markAsRead = async (id: string, showToast = true) => {
+    const markAsRead = async (id: number, showToast = true) => {
         try {
             setIsUpdating(true)
-            await markContactMessageAsReadServer(id)
+
+            const { error } = await supabase
+                .from('contact_messages')
+                .update({ status: 'read' })
+                .eq('id', id)
+
+            if (error) {
+                throw error
+            }
+
             setContact(prev => prev ? { ...prev, status: 'read' } : null)
             if (showToast) {
                 toast.success('Mensaje marcado como leído')
@@ -94,10 +104,19 @@ export default function ContactDetailPage() {
         }
     }
 
-    const markAsReplied = async (id: string) => {
+    const markAsReplied = async (id: number) => {
         try {
             setIsUpdating(true)
-            await markContactMessageAsRepliedServer(id)
+
+            const { error } = await supabase
+                .from('contact_messages')
+                .update({ status: 'replied' })
+                .eq('id', id)
+
+            if (error) {
+                throw error
+            }
+
             setContact(prev => prev ? { ...prev, status: 'replied' } : null)
             toast.success('Mensaje marcado como respondido')
         } catch (error) {
@@ -108,15 +127,52 @@ export default function ContactDetailPage() {
         }
     }
 
-    const archiveMessage = async (id: string) => {
+    const archiveMessage = async (id: number) => {
         try {
             setIsUpdating(true)
-            await archiveContactMessageServer(id)
+
+            const { error } = await supabase
+                .from('contact_messages')
+                .update({ status: 'archived' })
+                .eq('id', id)
+
+            if (error) {
+                throw error
+            }
+
             setContact(prev => prev ? { ...prev, status: 'archived' } : null)
             toast.success('Mensaje archivado')
         } catch (error) {
             console.error('Error:', error)
             toast.error('Error al actualizar el estado')
+        } finally {
+            setIsUpdating(false)
+        }
+    }
+
+    const deleteMessage = async (id: number) => {
+        if (!confirm('¿Estás seguro de que quieres eliminar este mensaje? Esta acción no se puede deshacer.')) {
+            return
+        }
+
+        try {
+            setIsUpdating(true)
+
+            const { error } = await supabase
+                .from('contact_messages')
+                .delete()
+                .eq('id', id)
+
+            if (error) {
+                throw error
+            }
+
+            toast.success('Mensaje eliminado correctamente')
+            // Redirigir a admin después de eliminar
+            router.push('/admin')
+        } catch (error) {
+            console.error('Error:', error)
+            toast.error('Error al eliminar el mensaje')
         } finally {
             setIsUpdating(false)
         }
@@ -184,8 +240,8 @@ export default function ContactDetailPage() {
                                 Recibido el {formatDate(contact.created_at)}
                             </CardDescription>
                         </div>
-                        <Badge 
-                            variant="default" 
+                        <Badge
+                            variant="default"
                             className={`${statusColors[contact.status]} text-white`}
                         >
                             {statusLabels[contact.status]}
@@ -208,9 +264,9 @@ export default function ContactDetailPage() {
                                 Email
                             </div>
                             <p className="text-lg">
-                                <a 
-                                    href={`mailto:${contact.email}`} 
-                                    className="text-blue-600 hover:text-blue-800 hover:underline"
+                                <a
+                                    href={`mailto:${contact.email}`}
+                                    className="text-green-600 hover:text-green-800 hover:underline"
                                 >
                                     {contact.email}
                                 </a>
@@ -263,17 +319,17 @@ export default function ContactDetailPage() {
                     <div className="space-y-4">
                         <h3 className="text-lg font-semibold">Acciones</h3>
                         <div className="flex flex-wrap gap-3">
-                            <Button 
+                            <Button
                                 onClick={handleEmailReply}
-                                className="bg-blue-600 hover:bg-blue-700"
+                                className="bg-green-600 hover:bg-green-700"
                             >
                                 <Reply className="mr-2 h-4 w-4" />
                                 Responder por Email
                             </Button>
 
                             {contact.status !== 'read' && (
-                                <Button 
-                                    onClick={() => markAsRead(contact.id.toString())}
+                                <Button
+                                    onClick={() => markAsRead(contact.id)}
                                     variant="outline"
                                     disabled={isUpdating}
                                 >
@@ -287,8 +343,8 @@ export default function ContactDetailPage() {
                             )}
 
                             {contact.status !== 'replied' && (
-                                <Button 
-                                    onClick={() => markAsReplied(contact.id.toString())}
+                                <Button
+                                    onClick={() => markAsReplied(contact.id)}
                                     variant="outline"
                                     disabled={isUpdating}
                                 >
@@ -302,8 +358,8 @@ export default function ContactDetailPage() {
                             )}
 
                             {contact.status !== 'archived' && (
-                                <Button 
-                                    onClick={() => archiveMessage(contact.id.toString())}
+                                <Button
+                                    onClick={() => archiveMessage(contact.id)}
                                     variant="outline"
                                     disabled={isUpdating}
                                 >
@@ -315,6 +371,19 @@ export default function ContactDetailPage() {
                                     Archivar
                                 </Button>
                             )}
+
+                            <Button
+                                onClick={() => deleteMessage(contact.id)}
+                                variant="destructive"
+                                disabled={isUpdating}
+                            >
+                                {isUpdating ? (
+                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                ) : (
+                                    <Trash2 className="mr-2 h-4 w-4" />
+                                )}
+                                Eliminar Mensaje
+                            </Button>
                         </div>
                     </div>
                 </CardContent>

@@ -65,6 +65,7 @@ const DISCOUNT_CODES = {
   "ELCHIVO5": 0.05,
   "LORENZO22": 0.22,
   "BYETHOST25": 0.25,
+  "BRAIS10": 0.1,
   "NONINA": 1
 
 }

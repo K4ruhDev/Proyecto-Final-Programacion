@@ -72,7 +72,7 @@ export function RegisterForm() {
         }
       }
 
-      router.push("/auth/verification")
+      router.push("/")
     } catch (error: any) {
       setError(error.message || "Error al registrarse. Por favor intenta de nuevo.")
     } finally {

@@ -486,7 +486,7 @@ export const blogPosts: BlogPost[] = [
       role: "Barista Certificado",
       image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=200&auto=format&fit=crop",
     },
-    image: "/images/espresso.png",
+    image: "/images/expresso.jpg",
     slug: "preparando-el-espresso-perfecto",
   },
   {
@@ -502,7 +502,7 @@ export const blogPosts: BlogPost[] = [
       role: "Maestra Tostadora",
       image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=200&auto=format&fit=crop",
     },
-    image: "/images/coffee-roasting.png",
+    image: "/images/tueste.jpg",
     slug: "la-ciencia-del-tueste-de-cafe",
   },
   {
@@ -518,7 +518,7 @@ export const blogPosts: BlogPost[] = [
       role: "Especialista en Sostenibilidad",
       image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=200&auto=format&fit=crop",
     },
-    image: "/images/espresso.png",
+    image: "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=1913&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     slug: "practicas-sostenibles-de-cultivo-de-cafe",
   },
   {
@@ -534,7 +534,7 @@ export const blogPosts: BlogPost[] = [
       role: "Q Grader Certificada",
       image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=200&auto=format&fit=crop",
     },
-    image: "/images/espresso.png",
+    image: "https://images.unsplash.com/photo-1556740767-414a9c4860c1?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDF8MHxzZWFyY2h8MXx8Y29mZmVlfGVufDB8fDB8fHww",
     slug: "guia-de-cata-de-cafe-para-principiantes",
   },
   {
